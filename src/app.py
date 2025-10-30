@@ -107,5 +107,40 @@ def signup_for_activity(activity_name: str, email: str):
         raise HTTPException(status_code=400, detail="Student already signed up for this activity")
 
     # Add student
-    activity["participants"].append(email)
-    return {"message": f"Signed up {email} for {activity_name}"}
+    # Normalize email (trim + lowercase) before storing
+    email_norm = (email or "").strip()
+    activity["participants"].append(email_norm)
+    return {"message": f"Signed up {email_norm} for {activity_name}"}
+
+
+
+@app.delete("/activities/{activity_name}/signup")
+def unregister_from_activity(activity_name: str, email: str):
+    """Unregister a student from an activity (by email).
+
+    Uses the same path as signup but with DELETE. Email matching is done case-insensitively
+    and ignores surrounding whitespace.
+    """
+    # Validate activity exists
+    if activity_name not in activities:
+        raise HTTPException(status_code=404, detail="Activity not found")
+
+    activity = activities[activity_name]
+
+    # Normalize incoming email for comparison
+    email_norm = (email or "").strip()
+    if not email_norm:
+        raise HTTPException(status_code=400, detail="A valid email is required")
+
+    # Find matching participant (case-insensitive)
+    matched_index = None
+    for idx, p in enumerate(activity["participants"]):
+        if p.strip().lower() == email_norm.lower():
+            matched_index = idx
+            break
+
+    if matched_index is None:
+        raise HTTPException(status_code=400, detail="Participant not found in this activity")
+
+    removed = activity["participants"].pop(matched_index)
+    return {"message": f"Removed {removed} from {activity_name}"}
