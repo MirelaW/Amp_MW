@@ -70,8 +70,63 @@ section h3 {
   color: #0066cc;
 }
 
-.activity-card p {
+.activity-card h5 {
+  margin-top: 12px;
   margin-bottom: 8px;
+  color: #1a237e;
+  font-size: 1rem;
+}
+
+.participants-list {
+  /* hide default bullets and reset left padding so we can use custom layout */
+  list-style: none;
+  padding-left: 0;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.participant-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 8px;
+  font-size: 0.95rem;
+  color: #444;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.03);
+}
+
+.participant-email {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: #c62828;
+  font-size: 16px;
+  line-height: 1;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  flex: 0 0 auto;
+}
+
+.delete-btn:hover,
+.delete-btn:focus {
+  background-color: rgba(198, 40, 40, 0.08);
+  outline: none;
+}
+
+.no-participants {
+  margin-top: 8px;
+  color: #666;
+  font-style: italic;
+  font-size: 0.95rem;
 }
 
 .form-group {
